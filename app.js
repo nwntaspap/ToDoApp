@@ -28,6 +28,12 @@ function addToDo() {
 function updateToDoListUI() {
   toDoList.innerHTML = "";
 
+  if (todos.length === 0) {
+    toDoList.innerHTML = `<p style="text-align: center; font-family: Segoe UI; font-size: 1.1rem; color: var(--secondary-color)">No todos yet...</p>`;
+
+    return;
+  }
+
   todos.forEach((todo, todoIndex) => {
     toDoItem = createToDoItem(todo, todoIndex);
     toDoList.append(toDoItem);
@@ -70,3 +76,13 @@ function createToDoItem(todoText, todoIndex) {
   `;
   return li;
 }
+
+// Delete Todo
+toDoList.addEventListener("click", function (e) {
+  if (e.target.closest(".delete-button")) {
+    const todoEl = e.target.closest(".todo");
+    const index = Number(todoEl.dataset.index);
+    todos.splice(index, 1);
+    updateToDoListUI();
+  }
+});
