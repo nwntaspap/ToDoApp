@@ -20,8 +20,13 @@ function addToDo() {
     return;
   }
 
+  const todoObject = {
+    text: todoText,
+    completed: false,
+  };
+
   // Push to array
-  todos.push(todoText);
+  todos.push(todoObject);
   saveToDos();
   updateToDoListUI();
   toDoInput.value = "";
@@ -43,13 +48,15 @@ function updateToDoListUI() {
 }
 
 // Create ToDo
-function createToDoItem(todoText, todoIndex) {
+function createToDoItem(todo, todoIndex) {
   const li = document.createElement("li");
   li.classList.add("todo");
   // 🔑 store index here
   li.dataset.index = todoIndex;
   li.innerHTML = `
-         <input type="checkbox" id="todo-${todoIndex}"/>
+         <input type="checkbox" id="todo-${todoIndex}" ${
+    todo.completed ? "checked" : ""
+  }/>
           <!-- the custom checkbox for our input -->
           <label for="todo-${todoIndex}" class="custom-checkbox">
             <svg
@@ -62,7 +69,7 @@ function createToDoItem(todoText, todoIndex) {
             </svg>
           </label>
           <!-- text works also like a checkbox for our input -->
-          <label for="todo-${todoIndex}" class="todo-text">${todoText}</label>
+          <label for="todo-${todoIndex}" class="todo-text">${todo.text}</label>
           <button class="delete-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -85,6 +92,16 @@ toDoList.addEventListener("click", function (e) {
     const todoEl = e.target.closest(".todo");
     const index = Number(todoEl.dataset.index);
     todos.splice(index, 1);
+    saveToDos();
+    updateToDoListUI();
+  }
+});
+
+// Toggle Todo
+toDoList.addEventListener("change", function (e) {
+  if (e.target.type === "checkbox") {
+    const index = Number(e.target.closest(".todo").dataset.index);
+    todos[index].completed = e.target.checked;
     saveToDos();
     updateToDoListUI();
   }
