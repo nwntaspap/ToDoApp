@@ -143,3 +143,19 @@ input[type="checkbox"]:checked ~ .todo-text {
 .delete-button:hover svg {
   fill: #ff0033;
 }
+@media (max-width: 500px) {
+  html {
+    font-size: 16px;
+  }
+  #add-button {
+    width: 100%;
+    position: unset;
+    margin-top: 0.5rem;
+    padding: 0.7rem;
+    /* height: auto; */
+  }
+  h1 {
+    margin-top: 3rem;
+    font-size: 15vw;
+  }
+}
