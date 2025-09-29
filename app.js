@@ -4,6 +4,7 @@ const addBtn = document.querySelector("#add-button");
 const toDoList = document.querySelector("#todo-list");
 
 let todos = [];
+loadToDos();
 updateToDoListUI();
 
 addBtn.addEventListener("click", function (e) {
@@ -21,6 +22,7 @@ function addToDo() {
 
   // Push to array
   todos.push(todoText);
+  saveToDos();
   updateToDoListUI();
   toDoInput.value = "";
 }
@@ -83,6 +85,27 @@ toDoList.addEventListener("click", function (e) {
     const todoEl = e.target.closest(".todo");
     const index = Number(todoEl.dataset.index);
     todos.splice(index, 1);
+    saveToDos();
     updateToDoListUI();
   }
 });
+
+// Save Todo
+function saveToDos() {
+  const json = JSON.stringify(todos);
+  localStorage.setItem("ToDoApp", json);
+}
+
+// Load Todo
+function loadToDos() {
+  try {
+    const todosJSON = localStorage.getItem("ToDoApp");
+
+    if (todosJSON) {
+      todos = JSON.parse(todosJSON);
+    }
+  } catch (err) {
+    console.error("Error loading from localStorage:", err);
+    return [];
+  }
+}
